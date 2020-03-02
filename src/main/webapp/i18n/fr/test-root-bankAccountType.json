@@ -1,0 +1,10 @@
+{
+  "sampleNeo4JNoCacheApp": {
+    "BankAccountType": {
+      "null": "",
+      "CHECKING": "CHECKING",
+      "SAVINGS": "SAVINGS",
+      "LOAN": "LOAN"
+    }
+  }
+}
