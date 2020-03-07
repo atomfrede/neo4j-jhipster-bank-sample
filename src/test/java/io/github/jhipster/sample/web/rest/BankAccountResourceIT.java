@@ -10,6 +10,7 @@ import io.github.jhipster.sample.service.mapper.BankAccountMapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,10 +38,10 @@ import io.github.jhipster.sample.domain.enumeration.BankAccountType;
  * Integration tests for the {@link BankAccountResource} REST controller.
  */
 @SpringBootTest(classes = SampleNeo4JNoCacheApp.class)
-
+@ExtendWith(AbstractNeo4jIT.class)
 @AutoConfigureMockMvc
 @WithMockUser
-public class BankAccountResourceIT extends AbstractNeo4jIT {
+public class BankAccountResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -269,7 +270,7 @@ public class BankAccountResourceIT extends AbstractNeo4jIT {
             .andExpect(jsonPath("$.[*].attachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_ATTACHMENT))))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
-    
+
     @Test
     public void getBankAccount() throws Exception {
         // Initialize the database

@@ -1,18 +1,28 @@
 package io.github.jhipster.sample;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.testcontainers.containers.Neo4jContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.testcontainers.containers.GenericContainer;
 
-@Testcontainers
-public class AbstractNeo4jIT {
+import java.util.concurrent.atomic.AtomicBoolean;
 
-    @Container
-    private static Neo4jContainer neo4jContainer = new Neo4jContainer().withoutAuthentication();
+public class AbstractNeo4jIT implements BeforeAllCallback {
 
-    @BeforeAll
-    public static void beforeAll() {
-        System.setProperty("org.neo4j.driver.uri", "bolt://" + neo4jContainer.getContainerIpAddress() + ":" + neo4jContainer.getMappedPort(7687));
+    private static AtomicBoolean started = new AtomicBoolean(false);
+
+    @Override
+    public void beforeAll(ExtensionContext extensionContext) throws Exception {
+        if (!started.get()) {
+            GenericContainer neo4jcontainer =
+                new GenericContainer("neo4j:4.0")
+                    .withExposedPorts(7687)
+                    .withEnv("NEO4J_AUTH", "none");
+            neo4jcontainer.start();
+            System.setProperty(
+                "org.neo4j.driver.uri",
+                "bolt://" + neo4jcontainer.getContainerIpAddress() + ":" + neo4jcontainer.getMappedPort(7687)
+            );
+            started.set(true);
+        }
     }
 }

@@ -8,6 +8,7 @@ import io.github.jhipster.sample.domain.User;
 import io.github.jhipster.config.JHipsterProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.MockitoAnnotations;
@@ -42,7 +43,8 @@ import static org.mockito.Mockito.*;
  * Integration tests for {@link MailService}.
  */
 @SpringBootTest(classes = SampleNeo4JNoCacheApp.class)
-public class MailServiceIT extends AbstractNeo4jIT {
+@ExtendWith(AbstractNeo4jIT.class)
+public class MailServiceIT {
 
     private static final String[] languages = {
         "en",
