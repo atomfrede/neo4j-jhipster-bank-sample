@@ -8,6 +8,7 @@ import io.github.jhipster.sample.service.LabelService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,10 +27,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link LabelResource} REST controller.
  */
 @SpringBootTest(classes = SampleNeo4JNoCacheApp.class)
-
+@ExtendWith(AbstractNeo4jIT.class)
 @AutoConfigureMockMvc
 @WithMockUser
-public class LabelResourceIT extends AbstractNeo4jIT {
+public class LabelResourceIT {
 
     private static final String DEFAULT_LABEL_NAME = "AAAAAAAAAA";
     private static final String UPDATED_LABEL_NAME = "BBBBBBBBBB";
@@ -84,7 +85,7 @@ public class LabelResourceIT extends AbstractNeo4jIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].labelName").value(hasItem(DEFAULT_LABEL_NAME)));
     }
-    
+
     @Test
     public void getLabel() throws Exception {
         // Initialize the database

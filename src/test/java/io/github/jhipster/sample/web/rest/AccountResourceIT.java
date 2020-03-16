@@ -1,5 +1,6 @@
 package io.github.jhipster.sample.web.rest;
 
+import io.github.jhipster.sample.AbstractNeo4jIT;
 import io.github.jhipster.sample.SampleNeo4JNoCacheApp;
 import io.github.jhipster.sample.config.Constants;
 import io.github.jhipster.sample.domain.Authority;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser(value = TEST_USER_LOGIN)
 @SpringBootTest(classes = SampleNeo4JNoCacheApp.class)
+@ExtendWith(AbstractNeo4jIT.class)
 public class AccountResourceIT {
     static final String TEST_USER_LOGIN = "test";
 

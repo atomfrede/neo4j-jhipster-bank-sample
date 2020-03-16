@@ -12,7 +12,16 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
-
+org:
+  neo4j:
+    driver:
+      pool:
+        metrics-enabled: true
+      uri: bolt://localhost:7687
+    migrations:
+      locations-to-scan:
+      packages-to-scan: io.github.jhipster.sample.config.neo4j
+      installed-by: sampleNeo4jNoCache
 spring:
   application:
     name: sampleNeo4jNoCache

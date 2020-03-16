@@ -12,6 +12,7 @@ import io.github.jhipster.security.RandomUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Integration tests for {@link UserService}.
  */
 @SpringBootTest(classes = SampleNeo4JNoCacheApp.class)
-public class UserServiceIT extends AbstractNeo4jIT {
+@ExtendWith(AbstractNeo4jIT.class)
+public class UserServiceIT {
 
     private static final String DEFAULT_LOGIN = "johndoe";
 
