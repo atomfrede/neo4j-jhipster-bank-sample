@@ -160,11 +160,10 @@ public class BankAccountResourceIT {
     @Test
     public void createBankAccount() throws Exception {
         int databaseSizeBeforeCreate = bankAccountRepository.findAll().size();
-
         // Create the BankAccount
         BankAccountDTO bankAccountDTO = bankAccountMapper.toDto(bankAccount);
         restBankAccountMockMvc.perform(post("/api/bank-accounts")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
             .andExpect(status().isCreated());
 
@@ -199,7 +198,7 @@ public class BankAccountResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restBankAccountMockMvc.perform(post("/api/bank-accounts")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
             .andExpect(status().isBadRequest());
 
@@ -218,8 +217,9 @@ public class BankAccountResourceIT {
         // Create the BankAccount, which fails.
         BankAccountDTO bankAccountDTO = bankAccountMapper.toDto(bankAccount);
 
+
         restBankAccountMockMvc.perform(post("/api/bank-accounts")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
             .andExpect(status().isBadRequest());
 
@@ -236,8 +236,9 @@ public class BankAccountResourceIT {
         // Create the BankAccount, which fails.
         BankAccountDTO bankAccountDTO = bankAccountMapper.toDto(bankAccount);
 
+
         restBankAccountMockMvc.perform(post("/api/bank-accounts")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
             .andExpect(status().isBadRequest());
 
@@ -254,6 +255,7 @@ public class BankAccountResourceIT {
         restBankAccountMockMvc.perform(get("/api/bank-accounts?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].guid").value(hasItem(DEFAULT_GUID.toString())))
             .andExpect(jsonPath("$.[*].bankNumber").value(hasItem(DEFAULT_BANK_NUMBER)))
@@ -270,7 +272,7 @@ public class BankAccountResourceIT {
             .andExpect(jsonPath("$.[*].attachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_ATTACHMENT))))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
-
+    
     @Test
     public void getBankAccount() throws Exception {
         // Initialize the database
@@ -280,6 +282,7 @@ public class BankAccountResourceIT {
         restBankAccountMockMvc.perform(get("/api/bank-accounts/{id}", bankAccount.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.guid").value(DEFAULT_GUID.toString()))
             .andExpect(jsonPath("$.bankNumber").value(DEFAULT_BANK_NUMBER))
@@ -296,7 +299,6 @@ public class BankAccountResourceIT {
             .andExpect(jsonPath("$.attachment").value(Base64Utils.encodeToString(DEFAULT_ATTACHMENT)))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
-
     @Test
     public void getNonExistingBankAccount() throws Exception {
         // Get the bankAccount
@@ -332,7 +334,7 @@ public class BankAccountResourceIT {
         BankAccountDTO bankAccountDTO = bankAccountMapper.toDto(updatedBankAccount);
 
         restBankAccountMockMvc.perform(put("/api/bank-accounts")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
             .andExpect(status().isOk());
 
@@ -366,7 +368,7 @@ public class BankAccountResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restBankAccountMockMvc.perform(put("/api/bank-accounts")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(bankAccountDTO)))
             .andExpect(status().isBadRequest());
 
@@ -384,7 +386,7 @@ public class BankAccountResourceIT {
 
         // Delete the bankAccount
         restBankAccountMockMvc.perform(delete("/api/bank-accounts/{id}", bankAccount.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

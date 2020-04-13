@@ -53,7 +53,7 @@ public class BankAccountResource {
         }
         BankAccountDTO result = bankAccountService.save(bankAccountDTO);
         return ResponseEntity.created(new URI("/api/bank-accounts/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
             .body(result);
     }
 
@@ -74,7 +74,7 @@ public class BankAccountResource {
         }
         BankAccountDTO result = bankAccountService.save(bankAccountDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, bankAccountDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, bankAccountDTO.getId()))
             .body(result);
     }
 
@@ -111,7 +111,8 @@ public class BankAccountResource {
     @DeleteMapping("/bank-accounts/{id}")
     public ResponseEntity<Void> deleteBankAccount(@PathVariable String id) {
         log.debug("REST request to delete BankAccount : {}", id);
+
         bankAccountService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
+    return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }

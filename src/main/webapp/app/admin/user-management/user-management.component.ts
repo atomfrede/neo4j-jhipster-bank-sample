@@ -3,7 +3,7 @@ import { HttpResponse, HttpHeaders } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
@@ -21,6 +21,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   currentAccount: Account | null = null;
   users: User[] | null = null;
   userListSubscription?: Subscription;
+  firstCall = true;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
   page!: number;
@@ -54,6 +55,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe();
+    this.handleBackNavigation();
   }
 
   ngOnDestroy(): void {
@@ -71,13 +73,37 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   loadPage(page: number): void {
-    if (page !== this.previousPage) {
-      this.previousPage = page;
-      this.transition();
-    }
+    this.firstCall = false;
+    this.previousPage = page;
+    this.transition();
+  }
+
+  handleBackNavigation(): void {
+    this.activatedRoute.queryParamMap.subscribe((params: ParamMap) => {
+      if (!this.firstCall) {
+        let prevPage = params.get('page');
+        if (prevPage === null) {
+          prevPage = '1'; // because there are no params in the URL the first time /admin/user-management
+        }
+        const prevSort = params.get('sort');
+        const prevSortSplit = prevSort?.split(',');
+        if (prevSortSplit) {
+          this.predicate = prevSortSplit[0];
+          this.ascending = prevSortSplit[1] === 'asc';
+        } else {
+          this.predicate = 'id';
+          this.ascending = true;
+        }
+        if (+prevPage !== this.page) {
+          this.page = +prevPage;
+        }
+        this.loadPage(this.page);
+      }
+    });
   }
 
   transition(): void {
+    this.firstCall = false;
     this.router.navigate(['./'], {
       relativeTo: this.activatedRoute.parent,
       queryParams: {

@@ -25,6 +25,7 @@ public interface BankAccountService {
      */
     List<BankAccountDTO> findAll();
 
+
     /**
      * Get the "id" bankAccount.
      *

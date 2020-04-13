@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 
@@ -53,7 +53,26 @@ export class LabelComponent implements OnInit, OnDestroy {
       this.ngbPaginationPage = data.pagingParams.page;
       this.loadPage();
     });
+    this.handleBackNavigation();
     this.registerChangeInLabels();
+  }
+
+  handleBackNavigation(): void {
+    this.activatedRoute.queryParamMap.subscribe((params: ParamMap) => {
+      const prevPage = params.get('page');
+      const prevSort = params.get('sort');
+      const prevSortSplit = prevSort?.split(',');
+      if (prevSortSplit) {
+        this.predicate = prevSortSplit[0];
+        this.ascending = prevSortSplit[1] === 'asc';
+      }
+      if (prevPage && +prevPage !== this.page) {
+        this.ngbPaginationPage = +prevPage;
+        this.loadPage(+prevPage);
+      } else {
+        this.loadPage(this.page);
+      }
+    });
   }
 
   ngOnDestroy(): void {

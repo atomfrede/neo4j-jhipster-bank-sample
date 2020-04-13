@@ -59,6 +59,7 @@ public class BankAccountServiceImpl implements BankAccountService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+
     /**
      * Get one bankAccount by id.
      *
@@ -80,6 +81,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public void delete(String id) {
         log.debug("Request to delete BankAccount : {}", id);
+
         bankAccountRepository.deleteById(id);
     }
 }

@@ -83,9 +83,10 @@ public class LabelResourceIT {
         restLabelMockMvc.perform(get("/api/labels?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.[*].labelName").value(hasItem(DEFAULT_LABEL_NAME)));
     }
-
+    
     @Test
     public void getLabel() throws Exception {
         // Initialize the database
@@ -95,9 +96,9 @@ public class LabelResourceIT {
         restLabelMockMvc.perform(get("/api/labels/{id}", label.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.labelName").value(DEFAULT_LABEL_NAME));
     }
-
     @Test
     public void getNonExistingLabel() throws Exception {
         // Get the label

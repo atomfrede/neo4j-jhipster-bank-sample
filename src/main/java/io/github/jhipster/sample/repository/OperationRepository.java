@@ -2,10 +2,10 @@ package io.github.jhipster.sample.repository;
 
 import io.github.jhipster.sample.domain.Operation;
 
-import org.neo4j.springframework.data.repository.query.Query;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.neo4j.springframework.data.repository.Neo4jRepository;
+import org.neo4j.springframework.data.repository.query.Query;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 
@@ -18,10 +18,9 @@ import java.util.Optional;
 @Repository
 public interface OperationRepository extends Neo4jRepository<Operation, String> {
 
-    @Query("MATCH (e:Operation {id: ?0}) RETURN e")
-    Optional<Operation> findOneWithEagerRelationships(String id);
-
-    @Query("MATCH (n:Operation)<-[]-(m) RETURN n,m")
+    @Query("MATCH (n:Operation)-[]->(m) RETURN n,m")
     Page<Operation> findAllWithEagerRelationships(Pageable pageable);
 
+    @Query("MATCH (n:Operation {id: $id})-[]->(m) RETURN n,m")
+    Optional<Operation> findOneWithEagerRelationships(String id);
 }

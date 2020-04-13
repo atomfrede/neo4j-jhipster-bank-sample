@@ -3,7 +3,6 @@ package io.github.jhipster.sample.repository;
 import io.github.jhipster.sample.domain.User;
 
 import org.springframework.data.domain.Page;
-
 import org.springframework.data.domain.Pageable;
 import org.neo4j.springframework.data.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
@@ -30,7 +29,6 @@ public interface UserRepository extends Neo4jRepository<User, String> {
 
     // See https://github.com/neo4j/sdn-rx/issues/51
     List<User> findAll();
-
-
+    
     Page<User> findAllByLoginNot(Pageable pageable, String login);
 }

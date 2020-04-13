@@ -104,6 +104,7 @@ public class UserService {
         if (userDTO.getEmail() != null) {
             newUser.setEmail(userDTO.getEmail().toLowerCase());
         }
+        newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
         // new user is not active
         newUser.setActivated(false);
@@ -133,6 +134,7 @@ public class UserService {
         if (userDTO.getEmail() != null) {
             user.setEmail(userDTO.getEmail().toLowerCase());
         }
+        user.setImageUrl(userDTO.getImageUrl());
         if (userDTO.getLangKey() == null) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
         } else {
@@ -154,29 +156,6 @@ public class UserService {
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
         return user;
-    }
-
-    /**
-     * Update basic information (first name, last name, email, language) for the current user.
-     *
-     * @param firstName first name of user.
-     * @param lastName  last name of user.
-     * @param email     email id of user.
-     * @param langKey   language key.
-     */
-    public void updateUser(String firstName, String lastName, String email, String langKey) {
-        SecurityUtils.getCurrentUserLogin()
-            .flatMap(userRepository::findOneByLogin)
-            .ifPresent(user -> {
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-                if (email != null) {
-                    user.setEmail(email.toLowerCase());
-                }
-                user.setLangKey(langKey);
-                userRepository.save(user);
-                log.debug("Changed Information for User: {}", user);
-            });
     }
 
     /**
@@ -216,6 +195,32 @@ public class UserService {
         });
     }
 
+    /**
+     * Update basic information (first name, last name, email, language) for the current user.
+     *
+     * @param firstName first name of user.
+     * @param lastName  last name of user.
+     * @param email     email id of user.
+     * @param langKey   language key.
+     * @param imageUrl  image URL of user.
+     */
+    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
+        SecurityUtils.getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(user -> {
+                user.setFirstName(firstName);
+                user.setLastName(lastName);
+                if (email != null) {
+                    user.setEmail(email.toLowerCase());
+                }
+                user.setLangKey(langKey);
+                user.setImageUrl(imageUrl);
+                userRepository.save(user);
+                log.debug("Changed Information for User: {}", user);
+            });
+    }
+
+
     public void changePassword(String currentClearTextPassword, String newPassword) {
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
@@ -237,10 +242,6 @@ public class UserService {
 
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
         return userRepository.findOneByLogin(login);
-    }
-
-    public Optional<User> getUserWithAuthorities(String id) {
-        return userRepository.findById(id);
     }
 
     public Optional<User> getUserWithAuthorities() {

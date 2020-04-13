@@ -81,10 +81,10 @@ public class BankAccount implements Serializable {
     private String description;
 
     @Relationship("user")
-    @JsonIgnoreProperties("bankAccounts")
+    @JsonIgnoreProperties(value = "bankAccounts", allowSetters = true)
     private User user;
 
-    @Relationship(value = "operations", direction = Relationship.Direction.OUTGOING)
+    @Relationship(value = "bankAccounts", direction = Relationship.Direction.INCOMING)
     private Set<Operation> operations = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

@@ -1,5 +1,5 @@
 export const enum BankAccountType {
-  CHECKING,
-  SAVINGS,
-  LOAN
+  CHECKING = 'CHECKING',
+  SAVINGS = 'SAVINGS',
+  LOAN = 'LOAN'
 }

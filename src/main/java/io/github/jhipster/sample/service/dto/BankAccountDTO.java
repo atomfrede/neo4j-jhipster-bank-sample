@@ -202,20 +202,16 @@ public class BankAccountDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof BankAccountDTO)) {
             return false;
         }
 
-        BankAccountDTO bankAccountDTO = (BankAccountDTO) o;
-        if (bankAccountDTO.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), bankAccountDTO.getId());
+        return id != null && id.equals(((BankAccountDTO) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override
@@ -236,7 +232,7 @@ public class BankAccountDTO implements Serializable {
             ", accountType='" + getAccountType() + "'" +
             ", attachment='" + getAttachment() + "'" +
             ", description='" + getDescription() + "'" +
-            ", userId=" + getUserId() +
+            ", userId='" + getUserId() + "'" +
             ", userLogin='" + getUserLogin() + "'" +
             "}";
     }

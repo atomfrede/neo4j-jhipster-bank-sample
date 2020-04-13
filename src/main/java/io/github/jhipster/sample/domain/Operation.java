@@ -39,8 +39,8 @@ public class Operation implements Serializable {
     @Property("amount")
     private BigDecimal amount;
 
-    @Relationship(value = "bankAccount", direction = Relationship.Direction.INCOMING)
-    @JsonIgnoreProperties("operations")
+    @Relationship(value = "bankAccount")
+    @JsonIgnoreProperties(value = "operations", allowSetters = true)
     private BankAccount bankAccount;
 
     private Set<Label> labels = new HashSet<>();

@@ -6,11 +6,11 @@ import io.github.jhipster.sample.domain.Operation;
 import io.github.jhipster.sample.repository.OperationRepository;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link OperationResource} REST controller.
  */
 @SpringBootTest(classes = SampleNeo4JNoCacheApp.class)
+@ExtendWith(MockitoExtension.class)
 @ExtendWith(AbstractNeo4jIT.class)
 @AutoConfigureMockMvc
 @WithMockUser
@@ -96,10 +97,9 @@ public class OperationResourceIT {
     @Test
     public void createOperation() throws Exception {
         int databaseSizeBeforeCreate = operationRepository.findAll().size();
-
         // Create the Operation
         restOperationMockMvc.perform(post("/api/operations")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(operation)))
             .andExpect(status().isCreated());
 
@@ -121,7 +121,7 @@ public class OperationResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOperationMockMvc.perform(post("/api/operations")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(operation)))
             .andExpect(status().isBadRequest());
 
@@ -139,8 +139,9 @@ public class OperationResourceIT {
 
         // Create the Operation, which fails.
 
+
         restOperationMockMvc.perform(post("/api/operations")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(operation)))
             .andExpect(status().isBadRequest());
 
@@ -156,8 +157,9 @@ public class OperationResourceIT {
 
         // Create the Operation, which fails.
 
+
         restOperationMockMvc.perform(post("/api/operations")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(operation)))
             .andExpect(status().isBadRequest());
 
@@ -166,7 +168,6 @@ public class OperationResourceIT {
     }
 
     @Test
-    @Disabled // TODO FIXME PLZ
     public void getAllOperations() throws Exception {
         // Initialize the database
         operationRepository.save(operation);
@@ -175,14 +176,14 @@ public class OperationResourceIT {
         restOperationMockMvc.perform(get("/api/operations?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())));
     }
-
+    
     @SuppressWarnings({"unchecked"})
     public void getAllOperationsWithEagerRelationshipsIsEnabled() throws Exception {
-        OperationResource operationResource = new OperationResource(operationRepositoryMock);
         when(operationRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restOperationMockMvc.perform(get("/api/operations?eagerload=true"))
@@ -193,7 +194,6 @@ public class OperationResourceIT {
 
     @SuppressWarnings({"unchecked"})
     public void getAllOperationsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        OperationResource operationResource = new OperationResource(operationRepositoryMock);
         when(operationRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restOperationMockMvc.perform(get("/api/operations?eagerload=true"))
@@ -211,11 +211,11 @@ public class OperationResourceIT {
         restOperationMockMvc.perform(get("/api/operations/{id}", operation.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()));
     }
-
     @Test
     public void getNonExistingOperation() throws Exception {
         // Get the operation
@@ -238,7 +238,7 @@ public class OperationResourceIT {
             .amount(UPDATED_AMOUNT);
 
         restOperationMockMvc.perform(put("/api/operations")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedOperation)))
             .andExpect(status().isOk());
 
@@ -255,11 +255,9 @@ public class OperationResourceIT {
     public void updateNonExistingOperation() throws Exception {
         int databaseSizeBeforeUpdate = operationRepository.findAll().size();
 
-        // Create the Operation
-
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restOperationMockMvc.perform(put("/api/operations")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(operation)))
             .andExpect(status().isBadRequest());
 
@@ -277,7 +275,7 @@ public class OperationResourceIT {
 
         // Delete the operation
         restOperationMockMvc.perform(delete("/api/operations/{id}", operation.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

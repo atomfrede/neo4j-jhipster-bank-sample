@@ -60,7 +60,7 @@ public class OperationResource {
         }
         Operation result = operationRepository.save(operation);
         return ResponseEntity.created(new URI("/api/operations/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
             .body(result);
     }
 
@@ -81,7 +81,7 @@ public class OperationResource {
         }
         Operation result = operationRepository.save(operation);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, operation.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, operation.getId()))
             .body(result);
     }
 
@@ -99,7 +99,7 @@ public class OperationResource {
         if (eagerload) {
             page = operationRepository.findAllWithEagerRelationships(pageable);
         } else {
-            page = operationRepository.findAll(pageable);
+            page = operationRepository.findAllWithEagerRelationships(pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -127,7 +127,8 @@ public class OperationResource {
     @DeleteMapping("/operations/{id}")
     public ResponseEntity<Void> deleteOperation(@PathVariable String id) {
         log.debug("REST request to delete Operation : {}", id);
+
         operationRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
+    return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }

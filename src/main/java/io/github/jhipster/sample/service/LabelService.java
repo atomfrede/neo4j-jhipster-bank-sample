@@ -47,6 +47,7 @@ public class LabelService {
         return labelRepository.findAll(pageable);
     }
 
+
     /**
      * Get one label by id.
      *
@@ -65,6 +66,7 @@ public class LabelService {
      */
     public void delete(String id) {
         log.debug("Request to delete Label : {}", id);
+
         labelRepository.deleteById(id);
     }
 }

@@ -73,7 +73,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Size(max = 20)
     @Property("reset_key")
-
     @JsonIgnore
     private String resetKey;
 
@@ -83,6 +82,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     @Relationship("HAS_AUTHORITY")
     private Set<Authority> authorities = new HashSet<>();
+
 
     public String getId() {
         return id;

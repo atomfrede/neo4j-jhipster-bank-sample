@@ -24,7 +24,7 @@
     "enableTranslation": true,
     "nativeLanguage": "en",
     "languages": ["en", "fr"],
-    "jhipsterVersion": "6.7.1",
+    "jhipsterVersion": "6.8.0",
     "jwtSecretKey": "Y2QwMDczZWJjNmVlMTc5OTYxMTQ1NWQxNzYzMTIyMWE2MmRlOTI2MzkzOGJkYWQ4N2I4ZTUxNGFkNDVmMjc3MzY5ZDU1NGQ1MDk0MDkzNmFhYWU5OWYxNmQyOWUyZGJjOTAxOTVlYmE0ZjdhZWI2N2QxYmIwN2YxMzI3MDlkNmU=",
     "embeddableLaunchScript": false,
     "useSass": true,

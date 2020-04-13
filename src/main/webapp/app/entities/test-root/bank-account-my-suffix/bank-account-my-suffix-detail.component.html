@@ -59,7 +59,7 @@
                 <dt><span jhiTranslate="sampleNeo4JNoCacheApp.testRootBankAccount.attachment">Attachment</span></dt>
                 <dd>
                     <div *ngIf="bankAccount.attachment">
-                        <a (click)="openFile(bankAccount.attachmentContentType!, bankAccount.attachment)" jhiTranslate="entity.action.open">open</a>
+                        <a (click)="openFile(bankAccount?.attachmentContentType!, bankAccount?.attachment)" jhiTranslate="entity.action.open">open</a>
                         {{ bankAccount.attachmentContentType }}, {{ byteSize(bankAccount.attachment) }}
                     </div>
                 </dd>
